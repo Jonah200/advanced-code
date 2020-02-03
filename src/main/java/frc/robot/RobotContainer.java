@@ -59,7 +59,7 @@ public class RobotContainer {
   public double getTriggerValue(){
 
     double leftTrigger = m_driverController.getRawAxis(OIConstants.leftTrigger); 
-    if (leftTrigger != lastLeftTrigger) {
+    if (Math.abs(leftTrigger - lastLeftTrigger) > 0.03) {
       System.out.println("leftTrigger changed from " + lastLeftTrigger + " to " + leftTrigger);
       leftTrigger = lastLeftTrigger;
     }
