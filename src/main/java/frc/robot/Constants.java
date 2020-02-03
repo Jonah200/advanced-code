@@ -90,6 +90,8 @@ public final class Constants {
         public final static int leftXAxis = 0;      //
         public final static int rightYAxis = 5;     //
         public final static int rightXAxis = 4;     // turn
+        public final static int leftTrigger = 2;
+        public final static int rightTrigger = 3;
         public final static int bButton = 2;        // shooter
         public final static int yButton = 4;        // reverse indexer
         public final static int xButton = 3;        // forward indexer

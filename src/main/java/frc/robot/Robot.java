@@ -70,7 +70,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_startTime = Timer.getFPGATimestamp();
-    
+    System.out.println("Start Time = " + m_startTime);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -89,9 +89,9 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     double elapsedTime = m_startTime - Timer.getFPGATimestamp();
 
-    if (elapsedTime % 100 == 0) {
-      System.out.println(elapsedTime);
-    }
+    //if (elapsedTime % 5 == 0) {
+      System.out.println("Elapsed Time " + elapsedTime);
+    //}
     if (elapsedTime < 3) {
 
     }

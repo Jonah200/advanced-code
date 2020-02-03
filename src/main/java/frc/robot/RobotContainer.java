@@ -49,6 +49,20 @@ public class RobotContainer {
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
+  public double getTriggerValue(){
+    double leftTrigger = m_driverController.getRawAxis(OIConstants.leftTrigger);
+    double rightTrigger = m_driverController.getRawAxis(OIConstants.rightTrigger);
+    double leftx = m_driverController.getRawAxis(OIConstants.leftXAxis);
+    double lefty = m_driverController.getRawAxis(OIConstants.leftYAxis);
+    double righty = m_driverController.getRawAxis(OIConstants.rightYAxis);
+    double rightx = m_driverController.getRawAxis(OIConstants.rightXAxis);
+    System.out.println(leftTrigger + ", " + rightTrigger + ", " + leftx + ", " + lefty + ", " + rightx + ", " + righty);
+    if(leftTrigger > -1.0){
+      return leftTrigger;
+    }else{
+      return -1 * rightTrigger;
+    }
+  }
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
@@ -60,8 +74,9 @@ public class RobotContainer {
         // hand, and turning controlled by the right.
         // Left Y Axis needs to be inverted for driving forward
         new RunCommand(() -> m_robotDrive.arcadeDrive(
-          -1 * m_driverController.getRawAxis(OIConstants.leftYAxis),
+          -1 * getTriggerValue(),
           m_driverController.getRawAxis(OIConstants.rightXAxis)), m_robotDrive));
+          
           
   }
 
