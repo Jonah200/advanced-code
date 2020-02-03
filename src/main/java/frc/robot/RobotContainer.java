@@ -45,18 +45,52 @@ public class RobotContainer {
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
+    private double lastLeftTrigger = 0;
+  private double lastRightTrigger = 0;
+  private double lastLeftX = 0;
+  private double lastLeftY = 0;
+  private double lastRightX = 0;
+  private double lastRightY = 0;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
+  
   public double getTriggerValue(){
-    double leftTrigger = m_driverController.getRawAxis(OIConstants.leftTrigger);
+
+    double leftTrigger = m_driverController.getRawAxis(OIConstants.leftTrigger); 
+    if (leftTrigger != lastLeftTrigger) {
+      System.out.println("leftTrigger changed from " + lastLeftTrigger + " to " + leftTrigger);
+      leftTrigger = lastLeftTrigger;
+    }
     double rightTrigger = m_driverController.getRawAxis(OIConstants.rightTrigger);
+    if (rightTrigger != lastRightTrigger) {
+      System.out.println("rightTrigger changed from " + lastRightTrigger + " to " + rightTrigger);
+      rightTrigger = lastRightTrigger;
+    }
     double leftx = m_driverController.getRawAxis(OIConstants.leftXAxis);
-    double lefty = m_driverController.getRawAxis(OIConstants.leftYAxis);
-    double righty = m_driverController.getRawAxis(OIConstants.rightYAxis);
+    if (leftx != lastLeftX) {
+      System.out.println("leftx changed from " + lastLeftX +  " to " + leftx);
+      lastLeftX = leftx;
+    }
     double rightx = m_driverController.getRawAxis(OIConstants.rightXAxis);
-    System.out.println(leftTrigger + ", " + rightTrigger + ", " + leftx + ", " + lefty + ", " + rightx + ", " + righty);
+    if (rightx != lastRightX) {
+      System.out.println("rightX changed from " + lastRightX +  " to " + rightx);
+      lastRightX = rightx;
+    }
+
+    double lefty = m_driverController.getRawAxis(OIConstants.leftYAxis);
+    if (lefty != lastLeftY) {
+      System.out.println("lefty changed from " + lastLeftY +  " to " + lefty);
+      lastLeftY = lefty;
+    }
+    double righty = m_driverController.getRawAxis(OIConstants.rightYAxis);
+    if (righty != lastRightY) {
+      System.out.println("rightY changed from " + lastRightY +  " to " + righty);
+      lastRightY = righty;
+    }
+   
+    // System.out.println(leftTrigger + ", " + rightTrigger + ", " + leftx + ", " + lefty + ", " + rightx + ", " + righty);
     if(leftTrigger > -1.0){
       return leftTrigger;
     }else{
