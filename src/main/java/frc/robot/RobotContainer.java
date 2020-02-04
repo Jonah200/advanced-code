@@ -64,28 +64,28 @@ public class RobotContainer {
       leftTrigger = lastLeftTrigger;
     }
     double rightTrigger = m_driverController.getRawAxis(OIConstants.rightTrigger);
-    if (rightTrigger != lastRightTrigger) {
+    if (Math.abs(rightTrigger- lastRightTrigger) > 0.03) {
       System.out.println("rightTrigger changed from " + lastRightTrigger + " to " + rightTrigger);
       rightTrigger = lastRightTrigger;
     }
     double leftx = m_driverController.getRawAxis(OIConstants.leftXAxis);
-    if (leftx != lastLeftX) {
+    if (Math.abs(leftx - lastLeftX) > 0.03) {
       System.out.println("leftx changed from " + lastLeftX +  " to " + leftx);
       lastLeftX = leftx;
     }
     double rightx = m_driverController.getRawAxis(OIConstants.rightXAxis);
-    if (rightx != lastRightX) {
+    if (Math.abs(rightx - lastRightX) > 0.03) {
       System.out.println("rightX changed from " + lastRightX +  " to " + rightx);
       lastRightX = rightx;
     }
 
     double lefty = m_driverController.getRawAxis(OIConstants.leftYAxis);
-    if (lefty != lastLeftY) {
+    if (Math.abs(lefty - lastLeftY) > 0.03) {
       System.out.println("lefty changed from " + lastLeftY +  " to " + lefty);
       lastLeftY = lefty;
     }
     double righty = m_driverController.getRawAxis(OIConstants.rightYAxis);
-    if (righty != lastRightY) {
+    if (Math.abs(righty - lastRightY) > 0.03) {
       System.out.println("rightY changed from " + lastRightY +  " to " + righty);
       lastRightY = righty;
     }
