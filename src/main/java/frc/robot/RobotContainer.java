@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -107,9 +108,29 @@ public class RobotContainer {
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
         // Left Y Axis needs to be inverted for driving forward
-        new RunCommand(() -> m_robotDrive.arcadeDrive(
-          -1 * getTriggerValue(),
-          m_driverController.getRawAxis(OIConstants.rightXAxis)), m_robotDrive));
+        new RunCommand(() -> {
+          double leftY = m_driverController.getRawAxis(OIConstants.leftYAxis);
+          double leftX = m_driverController.getRawAxis(OIConstants.leftXAxis);
+
+          // x is left trigger, y is right trigger
+          double rightY = m_driverController.getRawAxis(OIConstants.rightYAxis);
+          double rightX = m_driverController.getRawAxis(OIConstants.rightXAxis);
+
+          double rightTrigger = rightX;  // -1 to 1, we want 0 to 1
+          double leftTrigger = rightY;  // -1 to 1, we want 0 to 1
+
+          double forward = (leftTrigger + 1) / 2;
+          double reverse = (rightTrigger + 1) / 2;
+
+          SmartDashboard.putString("forward/reverse/forward - reverse",
+            reverse + "/" +  - forward+ "/" +
+            (reverse - forward));
+          SmartDashboard.putNumber("Driver Controller left y", leftY);
+          SmartDashboard.putNumber("Driver Controller right x", rightX);
+          SmartDashboard.putNumber("Driver Controller left x", leftX);
+          SmartDashboard.putNumber("Driver Controller right y", rightY);
+          m_robotDrive.arcadeDrive(-1 * (forward - reverse), rightX);
+        }, m_robotDrive));
           
           
   }
