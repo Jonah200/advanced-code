@@ -11,16 +11,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import frc.robot.Constants.IndexConstants;
-import frc.robot.Constants.IntakeConstants;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class ShooterSubsystem extends SubsystemBase {
 
   // Create the motor controllers
    private  CANSparkMax m_leftShooter;
    private CANSparkMax m_rightShooter;
-   private WPI_TalonSRX m_loader;
    
 
   /**
@@ -29,7 +25,9 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {
     m_leftShooter = new CANSparkMax(ShooterConstants.kLeftShooter, MotorType.kBrushless); // :)
     m_rightShooter = new CANSparkMax(ShooterConstants.kRightShooter, MotorType.kBrushless); // ;)
-    m_loader = new WPI_TalonSRX(IndexConstants.kLoader);
+
+    m_leftShooter.setInverted(false);
+    m_rightShooter.setInverted(true);
 
   }
   /**
@@ -40,26 +38,16 @@ public class ShooterSubsystem extends SubsystemBase {
     m_rightShooter.set(ShooterConstants.kMaxSpeedPercent);
     
   }
-  public void enableLoader(){
-    m_loader.set(ShooterConstants.kLoaderSpeed);
-  }
-
-  public void disableLoader(){
-    m_loader.set(0);
-  }
-
   public void reverse() {
-    m_leftShooter.set(ShooterConstants.kMaxSpeedPercent * 1);
-    m_rightShooter.set(ShooterConstants.kMaxSpeedPercent * 1);
-    m_loader.set(IntakeConstants.kMaxSpeedPercent * 1); 
-  }
+    m_leftShooter.set(ShooterConstants.kMaxSpeedPercent * -1);
+    m_rightShooter.set(ShooterConstants.kMaxSpeedPercent * -1);
+}
   /**
    * Stop the shooter
    */
   public void disable() {
     m_leftShooter.set(0);
     m_rightShooter.set(0);
-    m_loader.set(0);
     
   }
 

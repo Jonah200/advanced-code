@@ -29,7 +29,7 @@ public final class Constants {
         public static final int kLeftMotor2Port = 14; //7;   //back
         public static final int kRightMotor1Port = 18; //2;  //front
         public static final int kRightMotor2Port = 19; //1;  //back
-        public static final double kMaxSpeedPercent = 0.25;  
+        public static final double kMaxSpeedPercent = 0.5;  
 
         
         /*
@@ -62,36 +62,40 @@ public final class Constants {
     public static final class IntakeConstants {
         public static final int kLowerIntakeMotorPort = 13; //6;  //left
         public static final int kUpperIntakeMotorPort = 17; //5;  //right
-        public static final double kMaxSpeedPercent = .3;  
+        public static final double kMaxSpeedPercent = .55;  
     }
 
     public static final class IndexConstants {
         public static final int kRightIndexerMotorPort = 16; //4;  
         public static final int kLeftIndexerMotorPort = 11; //9;  
-        public static final int kLoader = 12; 
-        public static final double kMaxSpeedPercent = 0.4;  
         public static final double kRightSpeedPercent = 0.8;
         public static final double kLeftSpeedPercent = 0.5;   
+    }
+
+    public static final class LoaderConstants {
+        public static final double kMaxSpeedPercent = 0.25;
+        public static final int kLoader = 12;  
     }
 
    public static final class ShooterConstants {
         public static final int kRightShooter = 1; 
         public static final int kLeftShooter = 2;
         public static final double kMaxSpeedPercent = 1; 
-        public static final double kLoaderSpeed = 0.2;
+    }
+
+    public static final class BeamBrakeConstants {
+
     }
 
     public static final class OIConstants {
         // Main Joystick USB Port
-        public static final int kDriverControllerPort = 0;
+        public static final int kDriverControllerPort = 1;
         public static final int kOperatorControllerPort = 1;
         
         public final static int leftYAxis = 1;      // speed 
         public final static int leftXAxis = 0;      //
         public final static int rightYAxis = 5;     //
         public final static int rightXAxis = 4;     // turn
-        public final static int leftTrigger = 2;
-        public final static int rightTrigger = 3;
         public final static int bButton = 2;        // shooter
         public final static int yButton = 4;        // reverse indexer
         public final static int xButton = 3;        // forward indexer
@@ -102,6 +106,8 @@ public final class Constants {
         public final static int backButton = 7;     //
         public final static int leftButton = 9;     //
         public final static int rightButton = 10;   //
+
+
 
     }
 
