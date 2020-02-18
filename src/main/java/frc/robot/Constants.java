@@ -68,8 +68,8 @@ public final class Constants {
     public static final class IndexConstants {
         public static final int kRightIndexerMotorPort = 16; //4;  
         public static final int kLeftIndexerMotorPort = 11; //9;  
-        public static final double kRightSpeedPercent = 0.8;
-        public static final double kLeftSpeedPercent = 0.5;   
+        public static final double kRightSpeedPercent = 0.6;
+        public static final double kLeftSpeedPercent = 0.4;   
     }
 
     public static final class LoaderConstants {
@@ -81,17 +81,45 @@ public final class Constants {
         public static final int kRightShooter = 1; 
         public static final int kLeftShooter = 2;
         public static final double kMaxSpeedPercent = 1; 
+        
+        public static final double kP = .00008;  
+        public static final double kI = 0.0;
+        public static final double kD = 0;
+        public static final double Kff = 0;
+
+        public static final int[] kEncoderPorts = new int[]{4, 5};
+        public static final boolean kEncoderReversed = false;
+        public static final int kEncoderCPR = 4096;
+        
+        // Distance units will be rotations
+        public static final double kEncoderDistancePerPulse = 1.0 / (double) kEncoderCPR;
+        
+        public static final double kShooterFreeRPS = 5760;
+        public static final double kShooterTargetRPS = 3000;
+        public static final double kShooterToleranceRPS = 10;
+
+        //todo
+        // On a real robot the feedforward constants should be empirically determined; these are
+        // reasonable guesses.
+        public static final double kSVolts = 0.16; // started at 0.05, 0.07 was 4950, 0.1 4965, 0.2 5010
+        public static final double kVVoltSecondsPerRotation = 12.0 / kShooterFreeRPS;  // Should have value 12V at free speed...
+        public static final double kFeederSpeed = 0.5;
+
     }
 
     public static final class BeamBrakeConstants {
-
+        public static final int RecieverBottom = 1;
+        public static final int TransmitterBottom = 0;
+        public static final int RecieverTop = 2;
+        public static final int TransmitterTop = 3;
+        public static final int RecieverShooter = 6;
+        public static final int TransmitterShooter = 7;
     }
 
     public static final class OIConstants {
         // Main Joystick USB Port
-        public static final int kDriverControllerPort = 1;
+        public static final int kDriverControllerPort = 0;
         public static final int kOperatorControllerPort = 1;
-        
         public final static int leftYAxis = 1;      // speed 
         public final static int leftXAxis = 0;      //
         public final static int rightYAxis = 5;     //

@@ -17,7 +17,6 @@ public class ShooterSubsystem extends SubsystemBase {
   // Create the motor controllers
    private  CANSparkMax m_leftShooter;
    private CANSparkMax m_rightShooter;
-   
 
   /**
    * Creates a new Shooter Subsystem
@@ -28,8 +27,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
     m_leftShooter.setInverted(false);
     m_rightShooter.setInverted(true);
-
   }
+
+  
   /**
    * Run the shooter
    */
@@ -41,7 +41,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void reverse() {
     m_leftShooter.set(ShooterConstants.kMaxSpeedPercent * -1);
     m_rightShooter.set(ShooterConstants.kMaxSpeedPercent * -1);
-}
+  }
   /**
    * Stop the shooter
    */

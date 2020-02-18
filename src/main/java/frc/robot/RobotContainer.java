@@ -13,15 +13,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.LoaderSubsystem;
-import frc.robot.subsystems.PowerCellMovement;
-import frc.robot.subsystems.ShooterSubsystem;
-//import frc.robot.Constants.DriveConstants;
-//import frc.robot.Constants.IntakeConstants;
-import frc.robot.Constants.OIConstants;
-import frc.robot.commands.BallToStage1;
-import frc.robot.commands.LoaderToStage1;
+import frc.robot.subsystems.*;
+import frc.robot.Constants.*;
+import frc.robot.commands.*;
+
 
 // Either pass in "Button" or make it static
 // Ex:  private void configureButtonBindings(Object Button) {
@@ -38,9 +33,11 @@ public class RobotContainer {
 
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+  //private final ShooterSubsystem m_shooter = new ShooterSubsystem();
   private final PowerCellMovement m_powerCell = new PowerCellMovement();
   private final LoaderSubsystem m_loader = new LoaderSubsystem();
+  private final ShooterPID m_rightShooterPID = new ShooterPID(ShooterConstants.kRightShooter,"Right Shooter");
+  private final ShooterPID m_leftShooterPID = new ShooterPID(ShooterConstants.kLeftShooter,"Left Shooter");
 
 
   // The driver's controller
@@ -61,8 +58,8 @@ public class RobotContainer {
         // hand, and turning controlled by the right.
         // Left Y Axis needs to be inverted for driving forward
         new RunCommand(() -> m_robotDrive.arcadeDrive(
-          -1 * m_driverController.getRawAxis(OIConstants.leftYAxis),
-          m_driverController.getRawAxis(OIConstants.rightXAxis)), m_robotDrive));
+          -1 * m_operatorController.getRawAxis(OIConstants.leftYAxis),
+          m_operatorController.getRawAxis(OIConstants.rightXAxis)), m_robotDrive));
           
   }
 
@@ -76,44 +73,57 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    // Drive at half speed when the right bumper is held
-    /*
-    new JoystickButton(m_driverController, Button.kBumperRight.value).whenPressed(() -> m_robotDrive.setMaxOutput(0.5))
-        .whenReleased(() -> m_robotDrive.setMaxOutput(1));
-    */
+    /**
+     * DRIVER CONTROLLER BINDINGS
+     */
+    // starts the test drive after pressed y button
+    //new JoystickButton(m_driverController, Button.kY.value).whenHeld(new Reverse(m_robotDrive));  // this works
+    //new JoystickButton(m_driverController, Button.kY.value).whenHeld(new TestDrive(m_robotDrive));  // this also works
+
+
+    /**
+     * OPERATOR CONTROLLER BINDINGS
+     */
+    //make button to do fullsendpowercells maybe while loop?
+
+    // left bumper intake balls
+    new JoystickButton(m_operatorController, Button.kBumperLeft.value).whenPressed(() -> m_powerCell.enableIntakeAndIndexer())
+    .whenReleased(() -> m_powerCell.disable());
+
     
-    // Run the intake & indexer when Right Bumper is held, stop when released
+    // A button reverse balls
+    new JoystickButton(m_operatorController, Button.kA.value).whenPressed(() -> m_powerCell.reverseEntireSystem())
+    .whenReleased(() -> m_powerCell.disable());
+
+    // right bumper moves loader
+    new JoystickButton(m_operatorController, Button.kBumperRight.value).whenPressed(() -> m_loader.enable())
+    .whenReleased(() -> m_loader.disable());
+
+    // shooter moves on B button
     /*
-    new JoystickButton(m_operatorController, Button.kBumperRight.value).whenPressed(() -> m_powerCell.enableIntakeAndIndexer())
-    .whenReleased(() -> m_powerCell.disable());
+    new JoystickButton(m_operatorController, Button.kY.value).whenPressed(() -> m_shooterPID.runShooterMax())
+    .whenReleased(() -> m_shooterPID.stopShooter());
+
+    new JoystickButton(m_driverController, Button.kB.value).whenPressed(new InstantCommand(m_shooterPID::enable, m_shooterPID))
+    .whenReleased(new InstantCommand(m_shooterPID::disable, m_shooterPID));
     */
-    // Run the intake, indexer, and loader when Right Bumper is held, stop when released
-    /*    new JoystickButton(m_operatorController, Button.kBumperRight.value).whenPressed(() -> m_powerCell.enableEntireSystem())
-    .whenReleased(() -> m_powerCell.disable());
-    */
-    new JoystickButton(m_operatorController, Button.kBumperRight.value).whenPressed(() -> m_powerCell.enableIntakeAndIndexer())
-    .whenReleased(() -> m_powerCell.disable());
 
-    // Runs intake and indexer in reverse when Left Bumper is held, stop when released 
-    new JoystickButton(m_operatorController, Button.kBumperLeft.value).whenPressed(() -> m_powerCell.reverseIntakeAndIndexer())
-    .whenReleased(() -> m_powerCell.disable());
+    new JoystickButton(m_operatorController, Button.kB.value).whenHeld(new RunShooter(m_leftShooterPID, m_rightShooterPID));
+    
+    // Turn off the shooter when the 'B' button is pressed
+    //new JoystickButton(m_driverController, Button.kB.value)
+    //    .whenPressed(new InstantCommand(m_shooter::disable, m_shooter));
 
-    // Runs loader when pressing Y button
-    new JoystickButton(m_operatorController, Button.kY.value).whenPressed(() -> m_loader.enable())
-    .whenReleased(() ->  m_loader.disable());
-    //new JoystickButton(m_operatorController, Button.kY.value).whenHeld(new LoaderToStage1(m_powerCell));
-
-    // Reverse loader when pressing the A button
-    new JoystickButton(m_operatorController, Button.kA.value).whenPressed(() -> m_loader.reverse())
-    .whenReleased(() ->  m_loader.disable());
-
-    //shoots the shooter when pressing the B button
-    new JoystickButton(m_operatorController, Button.kB.value).whenPressed(() -> m_shooter.enable())
-    .whenReleased(() -> m_shooter.disable());
+// AUTOMATION TESTING
 
     // runs BallToStage1 when X button is pressed
     new JoystickButton(m_operatorController, Button.kX.value).whenHeld(new BallToStage1(m_powerCell));
+
+    // runs LoaderToStage1 when Y is pressed
+    //new JoystickButton(m_operatorController, Button.kY.value).whenHeld(new LoaderToStage1(m_powerCell));
   }
+  
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

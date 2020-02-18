@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.BeamBrakeConstants;
 import frc.robot.Constants.IndexConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.LoaderConstants;
@@ -30,6 +31,8 @@ public class PowerCellMovement extends SubsystemBase {
   private DigitalInput m_receiverBottom;
   private DigitalInput m_trasmitterTop;
   private DigitalInput m_receiverTop;
+  private DigitalInput m_transmitterShooter;
+  private DigitalInput m_receiverShooter;
   /**
    * Creates a new Power cell mov
    */
@@ -41,10 +44,12 @@ public class PowerCellMovement extends SubsystemBase {
     m_talonUpperIntake = new WPI_TalonSRX(IntakeConstants.kUpperIntakeMotorPort);
     m_loader = new WPI_TalonSRX(LoaderConstants.kLoader);
     // beam breaks 
-    m_trasmitterBottom = new DigitalInput(0);
-    m_receiverBottom = new DigitalInput(1);
-    m_trasmitterTop = new DigitalInput(3);
-    m_receiverTop = new DigitalInput(2);
+    m_trasmitterBottom = new DigitalInput(BeamBrakeConstants.TransmitterBottom);
+    m_receiverBottom = new DigitalInput(BeamBrakeConstants.RecieverBottom);
+    m_trasmitterTop = new DigitalInput(BeamBrakeConstants.TransmitterTop);
+    m_receiverTop = new DigitalInput(BeamBrakeConstants.RecieverTop);
+    m_transmitterShooter = new DigitalInput(BeamBrakeConstants.TransmitterShooter);
+    m_receiverShooter = new DigitalInput(BeamBrakeConstants.RecieverShooter);
 
    // inversing talons
     m_talonUpperIntake.setInverted(true);
@@ -106,15 +111,27 @@ public class PowerCellMovement extends SubsystemBase {
     return !(m_receiverTop.get());
   }
 
+  public boolean isShooterBeamTriggered(){
+    // .get() returns true when the beam is complete
+    return!(m_receiverShooter.get());
+  }
+
+  public void stopLoader(){
+    //keeps the balls from touching the loader
+    m_loader.set(-.02);
+  }
+
   /**
    * Does nothing....
    */
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("emitter Bottom", m_trasmitterBottom.get());
-    SmartDashboard.putBoolean("receiver Bottom", m_receiverBottom.get());
-    SmartDashboard.putBoolean("emitter Top", m_trasmitterTop.get());
-    SmartDashboard.putBoolean("receiver Top", m_receiverTop.get());
+    SmartDashboard.putBoolean("Transmitter Bottom", m_trasmitterBottom.get());
+    SmartDashboard.putBoolean("Receiver Bottom", m_receiverBottom.get());
+    SmartDashboard.putBoolean("Transmitter Top", m_trasmitterTop.get());
+    SmartDashboard.putBoolean("Receiver Top", m_receiverTop.get());
+    SmartDashboard.putBoolean("Transmitter Shooter", m_transmitterShooter.get());
+    SmartDashboard.putBoolean("Reciever Shooter", m_receiverShooter.get());
     // This method will be called once per scheduler run
   }
 
