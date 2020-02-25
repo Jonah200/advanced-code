@@ -2,25 +2,27 @@ package frc.robot.subsystems;
 
 //import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 //import edu.wpi.first.wpilibj.Encoder;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class DriveSubsystem extends SubsystemBase {
   // The motors on the left side of the drive.
-  private WPI_TalonSRX m_talonLeft1 = new WPI_TalonSRX(DriveConstants.kLeftMotor1Port);
-  private WPI_TalonSRX m_talonLeft2 = new WPI_TalonSRX(DriveConstants.kLeftMotor2Port);
+  private WPI_TalonFX m_leftFront = new WPI_TalonFX(DriveConstants.kLeftFrontMotor);
+  private WPI_TalonFX m_leftBack = new WPI_TalonFX(DriveConstants.kLeftBackMotor);
                          
+
   // The motors on the right side of the drive.
-  private WPI_TalonSRX m_talonRight1 = new WPI_TalonSRX(DriveConstants.kRightMotor1Port);
-  private WPI_TalonSRX m_talonRight2 = new WPI_TalonSRX(DriveConstants.kRightMotor2Port);
+  private WPI_TalonFX m_rightFront = new WPI_TalonFX(DriveConstants.kRightFrontMotor);
+  private WPI_TalonFX m_rightBack = new WPI_TalonFX(DriveConstants.kRightBackMotor);
 
   // Group them
-  private final SpeedControllerGroup m_leftMotors = new SpeedControllerGroup(m_talonLeft1, m_talonLeft2);
-  private final SpeedControllerGroup m_rightMotors = new SpeedControllerGroup(m_talonRight1, m_talonRight2);
+  private final SpeedControllerGroup m_leftMotors = new SpeedControllerGroup(m_leftFront, m_leftBack);
+  private final SpeedControllerGroup m_rightMotors = new SpeedControllerGroup(m_rightFront, m_rightBack);
 
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
@@ -48,14 +50,14 @@ public class DriveSubsystem extends SubsystemBase {
     //m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
     //m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
 
-    m_talonLeft2.follow(m_talonLeft1);
-    m_talonRight2.follow(m_talonRight1);
+    //m_leftBack.follow(m_leftFront);
+    //m_rightBack.follow(m_rightBack);
 
     // Practice bot is wired and mounted in a way where nothing is inverted
     // Left Axis of joystick response needs to be inverted though
 
     // Wooooah there - Chad implemented this for speed control on initial testing
-    setMaxOutput(DriveConstants.kMaxSpeedPercent);
+    setMaxOutput(DriveConstants.kMaxDriveSpeed);
   }
 
   /**
@@ -68,7 +70,13 @@ public class DriveSubsystem extends SubsystemBase {
     // speed limiting accomplished in Constructor
     m_drive.arcadeDrive(fwd, rot);
   }
+  public void tankDrive(double left, double right) {
+    m_drive.tankDrive(left, right);
+  }
 
+  public void tankDrive(double left, double right, double threshold) {
+    m_drive.tankDrive(Math.abs(left)>threshold?left:0, Math.abs(right)>threshold?right:0);
+  }
   /**
    * Resets the drive encoders to currently read a position of 0.
    */
@@ -149,4 +157,13 @@ public class DriveSubsystem extends SubsystemBase {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
   */
+
+  public void periodic(){
+    /*
+    SmartDashboard.putNumber("left front speed", m_leftFront.get());
+    SmartDashboard.putNumber("left back speed", m_rightBack.get());
+    SmartDashboard.putNumber("right front speed", m_rightFront.get());
+    SmartDashboard.putNumber("right back speed", m_rightFront.get());
+    */
+  }
 }
